@@ -9,9 +9,20 @@ int main() {
   int pos = 0;
   Tarefa tarefas[TOTAL];
 
-  int e = carregar(tarefas, TOTAL, &pos);
-  if(e != 0)
+  Erro e = carregar(tarefas, TOTAL, &pos);
+  if(e == NAO_ABRIU){
+    printf("erro ao abrir o arquivo\n");
     pos = 0;
+  }
+  else if(e == NAO_FECHOU){
+    printf("erro ao fechar o arquivo\n");
+    pos = 0;
+  }
+  else if(e == NAO_LEU){
+    printf("erro ao ler no arquivo\n");
+    pos = 0;
+  }
+
 
   int opcao;
   do {
@@ -28,14 +39,28 @@ int main() {
     printf("======================\n");
 
     if (opcao == 1) {
-      int erro = criar(tarefas, &pos);
+      e = criar(tarefas, &pos);
+      if(e == MAX_TAREFAS)
+        printf("Maximo de tarefas alcancadas\n");
     } else if (opcao == 2) {
-      int erro = deletar(tarefas, &pos);
+      e = deletar(tarefas, &pos);
+      if(e == SEM_TAREFAS)
+        printf("Sem tarefas para deletar\n");
+      else if(e == NAO_EXISTE)
+        printf("Tarefa não existe\n");
     } else if (opcao == 3) {
-      int erro = listar(tarefas, pos);
+      e = listar(tarefas, pos);
+      if(e == SEM_TAREFAS)
+        printf("Sem tarefas para listar\n");
     } else if (opcao == 0) {
       printf("Sair...\n");
-      salvar(tarefas, TOTAL , pos);
+      e = salvar(tarefas, TOTAL , pos);
+      if(e == NAO_ABRIU)
+        printf("Erro ao abrir o arquivo\n");
+      else if(e == NAO_FECHOU)
+        printf("Erro ao fechar o arquivo\n");
+      else if(e == NAO_ESCREVEU)
+        printf("Erro ao escrever no arquivo\n");
     } else {
       printf("Opção inválida\n");
     }
