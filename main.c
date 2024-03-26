@@ -10,12 +10,19 @@ int main() {
   Tarefa tarefas[TOTAL];
 
   Erro e = carregar(tarefas, TOTAL, &pos);
-  if(e == ABRIR){
+  if(e == NAO_ABRIU){
+    printf("erro ao abrir o arquivo\n");
     pos = 0;
   }
-else if(e == FECHAR){
-  printf("Erro ");
-}
+  else if(e == NAO_FECHOU){
+    printf("erro ao fechar o arquivo\n");
+    pos = 0;
+  }
+  else if(e == NAO_LEU){
+    printf("erro ao ler no arquivo\n");
+    pos = 0;
+  }
+
 
   int opcao;
   do {
