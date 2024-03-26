@@ -2,9 +2,9 @@
 #include "tarefas.h"
 #include <string.h>
 
-int criar(Tarefa tarefas[], int *pos){
+Erro criar(Tarefa tarefas[], int *pos){
   if(*pos >= TOTAL)
-    return 1;
+    return MAX_TAREFAS;
 
   printf("Entre com a prioridade: ");
   scanf("%d", &tarefas[*pos].prioridade);
@@ -17,12 +17,12 @@ int criar(Tarefa tarefas[], int *pos){
 
   *pos += 1;
 
-  return 0;
+  return OK;
 }
 
-int deletar(Tarefa tarefas[], int *pos){
+Erro deletar(Tarefa tarefas[], int *pos){
   if(*pos == 0)
-    return 1;
+    return SEM_TAREFAS;
 
   int pos_d;
   printf("Entre com a posição da tarefa: ");
@@ -30,7 +30,7 @@ int deletar(Tarefa tarefas[], int *pos){
   pos_d--;
   
   if(pos_d >= *pos){
-    return 2;
+    return NAO_EXISTE;
   }
   
   for (int i = pos_d; i < *pos; i++){
@@ -41,12 +41,12 @@ int deletar(Tarefa tarefas[], int *pos){
 
   *pos -= 1;
 
-  return 0;
+  return OK;
 }
 
-int listar(Tarefa tarefas[], int pos){
+Erro listar(Tarefa tarefas[], int pos){
   if(pos == 0)
-    return 1;
+    return SEM_TAREFAS;
   
   for (int i=0; i<pos; i++){
     printf("Pos: %d\t", i+1);
@@ -55,47 +55,47 @@ int listar(Tarefa tarefas[], int pos){
     printf("Descricao: %s\n", tarefas[i].descricao);
   }
 
-  return 0;
+  return OK;
 }
 
-int salvar(Tarefa tarefas[], int total, int pos){
+Erro salvar(Tarefa tarefas[], int total, int pos){
   FILE *f = fopen("tarefas", "wb");
   if (f == NULL)
-    return 1;
+    return NAO_ABRIU;
 
   int e = fwrite(tarefas, total, sizeof(Tarefa), f);
   if (e <= 0)
-    return 2;
+    return NAO_ESCREVEU;
 
   e = fwrite(&pos, 1, sizeof(int), f);
   if (e <=0)
-    return 2;
+    return NAO_ESCREVEU;
 
   e = fclose(f);
   if (e != 0)
-    return 3;
+    return NAO_FECHOU;
   
-  return 0;
+  return OK;
 }
 
-int carregar(Tarefa tarefas[], int total, int *pos){
+Erro carregar(Tarefa tarefas[], int total, int *pos){
   FILE *f = fopen("tarefas", "rb");
   if(f == NULL)
-    return 1;
+    return NAO_ABRIU;
 
   int e = fread(tarefas, total, sizeof(Tarefa), f);
   if(e <= 0)
-    return 2;
+    return NAO_LEU;
 
   e = fread(pos, 1, sizeof(int), f);
   if(e <= 0)
-    return 2;
+    return NAO_LEU;
 
   e = fclose(f);
   if(e != 0)
-    return 3;
+    return NAO_FECHOU;
 
-  return 0;
+  return OK;
 }
 
 void clearBuffer() {
