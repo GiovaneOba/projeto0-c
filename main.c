@@ -2,6 +2,7 @@
 // git push origin 1-menu-principal
 // git fetch origin
 // git checkout 1-menu-principal
+// git status (para ver quais arquivos estão ou não add ou não)
 #include "tarefas.h"
 #include <stdio.h>
 

@@ -44,18 +44,29 @@ Erro deletar(Tarefa tarefas[], int *pos){
   return OK;
 }
 
-Erro listar(Tarefa tarefas[], int pos){
-  if(pos == 0)
-    return SEM_TAREFAS;
-  
-  for (int i=0; i<pos; i++){
-    printf("Pos: %d\t", i+1);
-    printf("Prioridade: %d\t", tarefas[i].prioridade);
-    printf("Categoia: %s\t", tarefas[i].categoria);
-    printf("Descricao: %s\n", tarefas[i].descricao);
-  }
+Erro listar(Tarefa tarefas[], int pos) {
+    if (pos == 0)
+        return SEM_TAREFAS;
 
-  return OK;
+    clearBuffer();
+    char categoria[300];
+    printf("Digite a Categoria:\n");
+    fgets(categoria, 300, stdin);
+  
+    int encontradas = 0;
+    for (int i = 0; i < pos; i++) {
+        if (strcmp(tarefas[i].categoria, categoria) == 0) {
+            printf("Pos: %d\t", i + 1);
+            printf("Prioridade: %d\t", tarefas[i].prioridade);
+            printf("Categoria: %s\t", tarefas[i].categoria);
+            printf("Descrição: %s\n", tarefas[i].descricao);
+            encontradas = 1;
+        }
+    }
+
+    if (!encontradas)
+        printf("Nenhuma tarefa encontrada para a categoria %s\n", categoria)
+    return OK;
 }
 
 Erro salvar(Tarefa tarefas[], int total, int pos){
