@@ -5,17 +5,20 @@
 Erro criar(Tarefa tarefas[], int *pos){
   if(*pos >= TOTAL)
     return MAX_TAREFAS;
-
-  printf("Entre com a prioridade: ");
+  do{
+  printf("Entre com a prioridade (1 até 10): ");
   scanf("%d", &tarefas[*pos].prioridade);
   clearBuffer();
   printf("Entre com a categoria: ");
   fgets(tarefas[*pos].categoria, 100, stdin);
+  tarefas[*pos].categoria[strcspn(tarefas[*pos].categoria, "\n")] = '\0';
   printf("Entre com a descrição: ");
   fgets(tarefas[*pos].descricao, 300, stdin);
+  tarefas[*pos].descricao[strcspn(tarefas[*pos].descricao, "\n")] = '\0';
   
 
   *pos += 1;
+  }while(tarefas[*pos].prioridade > 10 && tarefas[*pos].prioridade < 1);
 
   return OK;
 }
