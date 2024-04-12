@@ -11,8 +11,12 @@ int main(){
     Tarefa tarefas[TOTAL];
     int pos;
     ERROS erro = fs[4](tarefas, &pos);
-    if(erro != OK)
-        pos = 0;
+    if(erro != OK){
+        printf("Erro ao carregar as tarefas: %d\n", erro);
+        return 1;
+    } else {
+        printf("Tarefas carregadas com sucesso!\n");
+    }
 
     int opcao;
     do{
@@ -27,12 +31,24 @@ int main(){
         opcao--;
         if(opcao > 2)
             printf("Opcao invalida\n");
-        else if(opcao >= 0)
-            fs[opcao](tarefas, &pos);
+        else if(opcao >= 0) {
+            ERROS erro = fs[opcao](tarefas, &pos);
+            if(erro != OK){
+                printf("Erro ao executar a operacao: %d\n", erro);
+            }
+        }
         else
             printf("Sair...\n");
 
     } while(opcao >= 0);
 
-    fs[3](tarefas, &pos);
+    ERROS erroSalvar = fs[3](tarefas, &pos);
+    if(erroSalvar != OK){
+        printf("Erro ao salvar as tarefas: %d\n", erroSalvar);
+        return 1; 
+    } else {
+        printf("Tarefas salvas com sucesso!\n");
+    }
+
+    return 0;
 }
