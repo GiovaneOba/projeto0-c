@@ -5,7 +5,7 @@
 ERROS criar(Tarefa tarefas[], int *pos){
     if(*pos >= TOTAL)
         return MAX_TAREFA;
-
+    do{
     printf("Entre com a prioridade (entre 1 e 10): ");
     scanf("%d", &tarefas[*pos].prioridade);
     clearBuffer();
@@ -20,6 +20,7 @@ ERROS criar(Tarefa tarefas[], int *pos){
     tarefas[*pos].descricao[strcspn(tarefas[*pos].descricao, "\n")] = '\0';
     
     *pos = *pos + 1;
+    }while(tarefas[*pos].prioridade > 10 && tarefas[*pos].prioridade < 1);
 
     return OK;
 }
