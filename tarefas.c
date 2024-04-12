@@ -1,105 +1,106 @@
 #include <stdio.h>
-#include "tarefas.h"
 #include <string.h>
+#include "tarefas.h"
 
-Erro criar(Tarefa tarefas[], int *pos){
-  if(*pos >= TOTAL)
-    return MAX_TAREFAS;
+ERROS criar(Tarefa tarefas[], int *pos){
+    if(*pos >= TOTAL)
+        return MAX_TAREFA;
 
-  printf("Entre com a prioridade: ");
-  scanf("%d", &tarefas[*pos].prioridade);
-  clearBuffer();
-  printf("Entre com a categoria: ");
-  fgets(tarefas[*pos].categoria, 100, stdin);
-  printf("Entre com a descrição: ");
-  fgets(tarefas[*pos].descricao, 300, stdin);
-  
+    printf("Entre com a prioridade (entre 1 e 10): ");
+    scanf("%d", &tarefas[*pos].prioridade);
+    clearBuffer();
+    if(tarefas[*pos].prioridade < 1 || tarefas[*pos].prioridade > 10)
+        return PRIORIDADE_INVALIDA;
 
-  *pos += 1;
+    printf("Entre com a categoria: ");
+    fgets(tarefas[*pos].categoria, 100, stdin);
+    tarefas[*pos].categoria[strcspn(tarefas[*pos].categoria, "\n")] = '\0'; // Remover \n
+    printf("Entre com a descricao: ");
+    fgets(tarefas[*pos].descricao, 300, stdin);
+    tarefas[*pos].descricao[strcspn(tarefas[*pos].descricao, "\n")] = '\0'; // Remover \n
+    
+    *pos = *pos + 1;
 
-  return OK;
+    return OK;
 }
 
-Erro deletar(Tarefa tarefas[], int *pos){
-  if(*pos == 0)
-    return SEM_TAREFAS;
+ERROS deletar(Tarefa tarefas[], int *pos){
+    // teste se existem tarefas
+    if(*pos == 0)
+        return SEM_TAREFAS;
 
-  int pos_d;
-  printf("Entre com a posição da tarefa: ");
-  scanf("%d", &pos_d);
-  pos_d--;
-  
-  if(pos_d >= *pos){
-    return NAO_EXISTE;
-  }
-  
-  for (int i = pos_d; i < *pos; i++){
-    tarefas[i].prioridade = tarefas[i + 1].prioridade;
-    strcpy(tarefas[i].categoria, tarefas[i + 1].categoria);
-    strcpy(tarefas[i].descricao, tarefas[i + 1].descricao);
-  }
+    // verifica se a tarefa escolhida existe
+    int pos_deletar;
+    printf("Entre com a posicao da tarefa a ser deletada: ");
+    scanf("%d", &pos_deletar);
+    pos_deletar--; // garantir posicao certa no array
+    if(pos_deletar >= *pos || pos_deletar < 0)
+        return NAO_ENCONTRADO;
 
-  *pos -= 1;
+    for(int i = pos_deletar; i < *pos; i++){
+        tarefas[i].prioridade = tarefas[i+1].prioridade;
+        strcpy(tarefas[i].categoria, tarefas[i+1].categoria);
+        strcpy(tarefas[i].descricao,  tarefas[i+1].descricao);
+    }
 
-  return OK;
+    *pos = *pos - 1;
+
+    return OK;
 }
 
-Erro listar(Tarefa tarefas[], int pos){
-  if(pos == 0)
-    return SEM_TAREFAS;
-  
-  for (int i=0; i<pos; i++){
-    printf("Pos: %d\t", i+1);
-    printf("Prioridade: %d\t", tarefas[i].prioridade);
-    printf("Categoia: %s\t", tarefas[i].categoria);
-    printf("Descricao: %s\n", tarefas[i].descricao);
-  }
+ERROS listar(Tarefa tarefas[], int *pos){
+    if(*pos == 0)
+        return SEM_TAREFAS;
 
-  return OK;
+    for(int i=0; i<*pos; i++){
+        printf("Pos: %d\t", i+1);
+        printf("Prioridade: %d\t", tarefas[i].prioridade);
+        printf("Categoria: %s\t", tarefas[i].categoria);
+        printf("Descricao: %s\n", tarefas[i].descricao);
+    }
+
+    return OK;
 }
 
-Erro salvar(Tarefa tarefas[], int total, int pos){
-  FILE *f = fopen("tarefas", "wb");
-  if (f == NULL)
-    return NAO_ABRIU;
+ERROS salvar(Tarefa tarefas[], int *pos){
+    FILE *f = fopen("tarefas.bin", "wb");
+    if(f == NULL)
+        return ABRIR;
 
-  int e = fwrite(tarefas, total, sizeof(Tarefa), f);
-  if (e <= 0)
-    return NAO_ESCREVEU;
+    int qtd = fwrite(tarefas, TOTAL, sizeof(Tarefa), f);
+    if(qtd == 0)
+        return ESCREVER;
 
-  e = fwrite(&pos, 1, sizeof(int), f);
-  if (e <=0)
-    return NAO_ESCREVEU;
+    qtd = fwrite(pos, 1, sizeof(int), f);
+    if(qtd == 0)
+        return ESCREVER;
 
-  e = fclose(f);
-  if (e != 0)
-    return NAO_FECHOU;
-  
-  return OK;
+    if(fclose(f))
+        return FECHAR;
+
+    return OK;
 }
 
-Erro carregar(Tarefa tarefas[], int total, int *pos){
-  FILE *f = fopen("tarefas", "rb");
-  if(f == NULL)
-    return NAO_ABRIU;
+ERROS carregar(Tarefa tarefas[], int *pos){
+    FILE *f = fopen("tarefas.bin", "rb");
+    if(f == NULL)
+        return ABRIR;
 
-  int e = fread(tarefas, total, sizeof(Tarefa), f);
-  if(e <= 0)
-    return NAO_LEU;
+    int qtd = fread(tarefas, TOTAL, sizeof(Tarefa), f);
+    if(qtd == 0)
+        return LER;
 
-  e = fread(pos, 1, sizeof(int), f);
-  if(e <= 0)
-    return NAO_LEU;
+    qtd = fread(pos, 1, sizeof(int), f);
+    if(qtd == 0)
+        return LER;
 
-  e = fclose(f);
-  if(e != 0)
-    return NAO_FECHOU;
+    if(fclose(f))
+        return FECHAR;
 
-  return OK;
+    return OK;
 }
 
-void clearBuffer() {
-  int c;
-  while ((c = getchar()) != '\n' && c != EOF) {
-  }
+void clearBuffer(){
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }
