@@ -13,7 +13,7 @@ int main(){
     ERROS erro = fs[4](tarefas, &pos);
     if(erro != OK){
         printf("Erro ao carregar as tarefas: %d\n", erro);
-        return 1;
+        return 1; 
     } else {
         printf("Tarefas carregadas com sucesso!\n");
     }
@@ -33,8 +33,29 @@ int main(){
             printf("Opcao invalida\n");
         else if(opcao >= 0) {
             ERROS erro = fs[opcao](tarefas, &pos);
-            if(erro != OK){
-                printf("Erro ao executar a operacao: %d\n", erro);
+            if(erro == MAX_TAREFA){
+                printf("Erro ao executar a operacao: MAX_TAREFA - %d\n", erro);
+            }
+            else if (erro == SEM_TAREFAS){
+                printf("Erro ao executar a operacao: SEM_TAREFAS - %d\n", erro);
+            }
+            else if (erro == NAO_ENCONTRADO){
+                printf("Erro ao executar a operacao: NAO_ENCONTRADO - %d\n", erro);
+            }
+            else if (erro == ABRIR){
+                printf("Erro ao executar a operacao: ABRIR - %d\n", erro);
+            }
+            else if (erro == FECHAR){
+                printf("Erro ao executar a operacao: FECHAR - %d\n", erro);
+            }
+            else if (erro == ESCREVER){
+                printf("Erro ao executar a operacao: ESCREVER - %d\n", erro);
+            }
+            else if (erro == LER){
+                printf("Erro ao executar a operacao: LER - %d\n", erro);
+            }
+            else if (erro == PRIORIDADE_INVALIDA){
+                printf("Erro ao executar a operacao: PRIORIDADE_INVALIDA - %d\n", erro);
             }
         }
         else
@@ -50,5 +71,5 @@ int main(){
         printf("Tarefas salvas com sucesso!\n");
     }
 
-    return 0;
+    return 0; 
 }
