@@ -14,10 +14,10 @@ ERROS criar(Tarefa tarefas[], int *pos){
 
     printf("Entre com a categoria: ");
     fgets(tarefas[*pos].categoria, 100, stdin);
-    tarefas[*pos].categoria[strcspn(tarefas[*pos].categoria, "\n")] = '\0'; // Remover \n
+    tarefas[*pos].categoria[strcspn(tarefas[*pos].categoria, "\n")] = '\0';
     printf("Entre com a descricao: ");
     fgets(tarefas[*pos].descricao, 300, stdin);
-    tarefas[*pos].descricao[strcspn(tarefas[*pos].descricao, "\n")] = '\0'; // Remover \n
+    tarefas[*pos].descricao[strcspn(tarefas[*pos].descricao, "\n")] = '\0'; 
     
     *pos = *pos + 1;
 
@@ -25,15 +25,13 @@ ERROS criar(Tarefa tarefas[], int *pos){
 }
 
 ERROS deletar(Tarefa tarefas[], int *pos){
-    // teste se existem tarefas
     if(*pos == 0)
         return SEM_TAREFAS;
 
-    // verifica se a tarefa escolhida existe
     int pos_deletar;
     printf("Entre com a posicao da tarefa a ser deletada: ");
     scanf("%d", &pos_deletar);
-    pos_deletar--; // garantir posicao certa no array
+    pos_deletar--;
     if(pos_deletar >= *pos || pos_deletar < 0)
         return NAO_ENCONTRADO;
 
