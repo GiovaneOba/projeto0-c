@@ -92,7 +92,7 @@ ERROS exportar(Tarefa tarefas[], int *pos) {
     clearBuffer();
     printf("Digite o nome do arquivo de texto de saída: ");
     fgets(nome_arquivo_texto, 50, stdin);
-    nome_arquivo_texto[strcspn(nome_arquivo_texto, "\n")] = '\0'; // Remover \n
+    nome_arquivo_texto[strcspn(nome_arquivo_texto, "\n")] = '\0';
 
     arquivo_texto = fopen(nome_arquivo_texto, "w");
     if (arquivo_texto == NULL) {
