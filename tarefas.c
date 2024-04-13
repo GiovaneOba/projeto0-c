@@ -31,7 +31,9 @@ ERROS deletar(Tarefa tarefas[], int *pos){
     int pos_deletar;
     printf("Entre com a posicao da tarefa a ser deletada: ");
     scanf("%d", &pos_deletar);
-    pos_deletar--;
+
+    pos_deletar--; 
+
     if(pos_deletar >= *pos || pos_deletar < 0)
         return NAO_ENCONTRADO;
 
@@ -40,21 +42,39 @@ ERROS deletar(Tarefa tarefas[], int *pos){
         strcpy(tarefas[i].categoria, tarefas[i+1].categoria);
         strcpy(tarefas[i].descricao,  tarefas[i+1].descricao);
     }
-
+  
     *pos = *pos - 1;
 
     return OK;
 }
 
 ERROS listar(Tarefa tarefas[], int *pos){
+    char categoria[TAMANHO_CATEGORIA];
+    clearBuffer();
+    printf("Entre com a categoria (deixe em branco para listar todas): ");
+    fgets(categoria, TAMANHO_CATEGORIA, stdin);
+    categoria[strcspn(categoria, "\n")] = '\0'; 
+
     if(*pos == 0)
         return SEM_TAREFAS;
 
-    for(int i=0; i<*pos; i++){
-        printf("Pos: %d\t", i+1);
-        printf("Prioridade: %d\t", tarefas[i].prioridade);
-        printf("Categoria: %s\t", tarefas[i].categoria);
-        printf("Descricao: %s\n", tarefas[i].descricao);
+    int encontradas = 0;
+    for(int i = 0; i < *pos; i++){
+        if(categoria[0] == '\0' || strcmp(tarefas[i].categoria, categoria) == 0){
+            printf("Pos: %d\t", i+1);
+            printf("Prioridade: %d\t", tarefas[i].prioridade);
+            printf("Categoria: %s\t", tarefas[i].categoria);
+            printf("Descricao: %s\n", tarefas[i].descricao);
+            encontradas++;
+        }
+    }
+
+    if(encontradas == 0){
+        if(categoria[0] != '\0')
+            printf("Nenhuma tarefa encontrada para a categoria '%s'\n", categoria);
+        else
+            printf("Nenhuma tarefa cadastrada\n");
+
     }
 
     return OK;
@@ -80,7 +100,8 @@ ERROS salvar(Tarefa tarefas[], int *pos){
 }
 
 ERROS carregar(Tarefa tarefas[], int *pos){
-    FILE *f = fopen("tarefas.bin", "rb");
+    FILE *f = fopen("tarefas", "rb");
+
     if(f == NULL)
         return ABRIR;
 
