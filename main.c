@@ -6,11 +6,11 @@
 #include "tarefas.h"
 
 int main(){
-    funcao fs[] = {criar, deletar, listar, salvar, carregar};
+    funcao fs[] = {criar, deletar, listar, exportar, salvar, carregar};
 
     Tarefa tarefas[TOTAL];
     int pos;
-    ERROS erro = fs[4](tarefas, &pos);
+    ERROS erro = fs[5](tarefas, &pos);
     if(erro != OK){
         printf("Erro ao carregar as tarefas: %d\n", erro);
         return 1; 
@@ -24,12 +24,13 @@ int main(){
         printf("1 - Criar tarefa\n");
         printf("2 - Deletar tarefa\n");
         printf("3 - Listar tarefas\n");
+        printf("4 - Exportar tarefas para arquivo de texto\n");
         printf("0 - Sair\n");
         printf("Escolha uma opcao: ");
 
         scanf("%d", &opcao);
         opcao--;
-        if(opcao > 2)
+        if(opcao > 3)
             printf("Opcao invalida\n");
         else if(opcao >= 0) {
             ERROS erro = fs[opcao](tarefas, &pos);
@@ -63,7 +64,7 @@ int main(){
 
     } while(opcao >= 0);
 
-    ERROS erroSalvar = fs[3](tarefas, &pos);
+    ERROS erroSalvar = fs[4](tarefas, &pos);
     if(erroSalvar != OK){
         printf("Erro ao salvar as tarefas: %d\n", erroSalvar);
         return 1; 
