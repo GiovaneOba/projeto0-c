@@ -2,68 +2,37 @@
 // git push origin 1-menu-principal
 // git fetch origin
 // git checkout 1-menu-principal
-#include "tarefas.h"
 #include <stdio.h>
+#include "tarefas.h"
 
-int main() {
-  int pos = 0;
-  Tarefa tarefas[TOTAL];
+int main(){
+    funcao fs[] = {criar, deletar, listar, salvar, carregar};
 
-  Erro e = carregar(tarefas, TOTAL, &pos);
-  if(e == NAO_ABRIU){
-    printf("erro ao abrir o arquivo\n");
-    pos = 0;
-  }
-  else if(e == NAO_FECHOU){
-    printf("erro ao fechar o arquivo\n");
-    pos = 0;
-  }
-  else if(e == NAO_LEU){
-    printf("erro ao ler no arquivo\n");
-    pos = 0;
-  }
+    Tarefa tarefas[TOTAL];
+    int pos;
+    ERROS erro = fs[4](tarefas, &pos);
+    if(erro != OK)
+        pos = 0;
 
+    int opcao;
+    do{
+        printf("\nMenu principal\n");
+        printf("1 - Criar tarefa\n");
+        printf("2 - Deletar tarefa\n");
+        printf("3 - Listar tarefas\n");
+        printf("0 - Sair\n");
+        printf("Escolha uma opcao: ");
 
-  int opcao;
-  do {
-    printf("======================\n");
-    printf("Menu Principal\n");
-    printf("======================\n");
-    printf("1 - Criar Tarefa\n");
-    printf("2 - Deletar Tarefas\n");
-    printf("3 - Listar Tarefas\n");
-    printf("0 - Sair\n");
-    printf("Entre com uma opção: \n");
-    int i = scanf("%d", &opcao);
-    printf("Opção escolhida: %d\n", opcao);
-    printf("======================\n");
+        scanf("%d", &opcao);
+        opcao--;
+        if(opcao > 2)
+            printf("Opcao invalida\n");
+        else if(opcao >= 0)
+            fs[opcao](tarefas, &pos);
+        else
+            printf("Sair...\n");
 
-    if (opcao == 1) {
-      e = criar(tarefas, &pos);
-      if(e == MAX_TAREFAS)
-        printf("Maximo de tarefas alcancadas\n");
-    } else if (opcao == 2) {
-      e = deletar(tarefas, &pos);
-      if(e == SEM_TAREFAS)
-        printf("Sem tarefas para deletar\n");
-      else if(e == NAO_EXISTE)
-        printf("Tarefa não existe\n");
-    } else if (opcao == 3) {
-      e = listar(tarefas, pos);
-      if(e == SEM_TAREFAS)
-        printf("Sem tarefas para listar\n");
-    } else if (opcao == 0) {
-      printf("Sair...\n");
-      e = salvar(tarefas, TOTAL , pos);
-      if(e == NAO_ABRIU)
-        printf("Erro ao abrir o arquivo\n");
-      else if(e == NAO_FECHOU)
-        printf("Erro ao fechar o arquivo\n");
-      else if(e == NAO_ESCREVEU)
-        printf("Erro ao escrever no arquivo\n");
-    } else {
-      printf("Opção inválida\n");
-    }
+    } while(opcao >= 0);
 
-  } while (opcao != 0);
+    fs[3](tarefas, &pos);
 }
