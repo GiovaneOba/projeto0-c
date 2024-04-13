@@ -31,7 +31,9 @@ ERROS deletar(Tarefa tarefas[], int *pos){
     int pos_deletar;
     printf("Entre com a posicao da tarefa a ser deletada: ");
     scanf("%d", &pos_deletar);
+
     pos_deletar--; 
+
     if(pos_deletar >= *pos || pos_deletar < 0)
         return NAO_ENCONTRADO;
 
@@ -40,7 +42,7 @@ ERROS deletar(Tarefa tarefas[], int *pos){
         strcpy(tarefas[i].categoria, tarefas[i+1].categoria);
         strcpy(tarefas[i].descricao,  tarefas[i+1].descricao);
     }
-
+  
     *pos = *pos - 1;
 
     return OK;
@@ -72,6 +74,7 @@ ERROS listar(Tarefa tarefas[], int *pos){
             printf("Nenhuma tarefa encontrada para a categoria '%s'\n", categoria);
         else
             printf("Nenhuma tarefa cadastrada\n");
+
     }
 
     return OK;
@@ -98,6 +101,7 @@ ERROS salvar(Tarefa tarefas[], int *pos){
 
 ERROS carregar(Tarefa tarefas[], int *pos){
     FILE *f = fopen("tarefas", "rb");
+
     if(f == NULL)
         return ABRIR;
 
@@ -119,4 +123,3 @@ void clearBuffer(){
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
-

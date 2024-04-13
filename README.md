@@ -1,3 +1,14 @@
+O projeto e um programa que basicamente faz operações basicas de criar, listar e deletar uma tarefa. Para criar uma tarefa digite o número 1 no teclado e siga as instruções, para deletar uma tarefa digite o número 2 e do telcaod e siga as instruções e para listar as tarefas digite 3 no teclado e siga as instruções. Para sair do programa basta digitar o número 0, para que as alterações sejam salvas.
+
+Para iniciar o programa abra o terminal, nas pasta do arquivo e com o gcc iremos digitar:
+    gcc main.c tarefas.c && ./a.out
+
+Com isso você terá seu código funcionando e poderá aproveitar do sistema desenvolvido.
+
+Feito por Giovane Oba e Felipe Brum
+
+--------------------------------------------------------------------------------------------------------
+
 # Projeto 0 - Lista de Tarefas (exemplo feito em aula e não precisa ser entregue)
 
 Para este primeiro projeto você deverá implementar um programa que gerencia uma lista de tarefas, sendo que cada tarefa deve conter uma descrição, uma categoria e uma prioridade (quanto maior o valor, maior a prioridade da tarefa). Seu programa deve conseguir armazenar até 100 tarefas e permitir que o usuário cadastre, delete e liste as tarefas.
