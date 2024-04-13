@@ -13,10 +13,10 @@ ERROS criar(Tarefa tarefas[], int *pos){
         return PRIORIDADE_INVALIDA;
 
     printf("Entre com a categoria: ");
-    fgets(tarefas[*pos].categoria, 100, stdin);
+    fgets(tarefas[*pos].categoria, TAMANHO_CATEGORIA, stdin);
     tarefas[*pos].categoria[strcspn(tarefas[*pos].categoria, "\n")] = '\0';
     printf("Entre com a descricao: ");
-    fgets(tarefas[*pos].descricao, 300, stdin);
+    fgets(tarefas[*pos].descricao, TAMANHO_DESCRICAO, stdin);
     tarefas[*pos].descricao[strcspn(tarefas[*pos].descricao, "\n")] = '\0'; 
     
     *pos = *pos + 1;
