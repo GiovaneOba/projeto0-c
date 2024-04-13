@@ -77,8 +77,40 @@ ERROS listar(Tarefa tarefas[], int *pos){
     return OK;
 }
 
+ERROS exportar(Tarefa tarefas[], int *pos) {
+    char nome_arquivo_texto[50];
+    FILE *arquivo_binario;
+    FILE *arquivo_texto;
+
+    arquivo_binario = fopen("tarefas", "rb");
+    if (arquivo_binario == NULL)
+        return ABRIR;
+
+    clearBuffer();
+    printf("Digite o nome do arquivo de texto de saída: ");
+    fgets(nome_arquivo_texto, 50, stdin);
+    nome_arquivo_texto[strcspn(nome_arquivo_texto, "\n")] = '\0'; // Remover \n
+
+    arquivo_texto = fopen(nome_arquivo_texto, "w");
+    if (arquivo_texto == NULL) {
+        fclose(arquivo_binario);
+        return ABRIR;
+    }
+
+
+    for (int i = 0; i < *pos; i++) {
+        fread(&tarefas[i], sizeof(Tarefa), 1, arquivo_binario);
+        fprintf(arquivo_texto, "Prioridade: %d, Categoria: %s, Descricao: %s\n", tarefas[i].prioridade, tarefas[i].categoria, tarefas[i].descricao);
+    }
+
+    fclose(arquivo_binario);
+    fclose(arquivo_texto);
+
+    return OK;
+}
+
 ERROS salvar(Tarefa tarefas[], int *pos){
-    FILE *f = fopen("tarefas.bin", "wb");
+    FILE *f = fopen("tarefas", "wb");
     if(f == NULL)
         return ABRIR;
 
